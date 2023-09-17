@@ -1,0 +1,69 @@
+﻿@model IEnumerable<BusinessObject.Models.Product>
+
+@{
+    var categories = ViewData["Categories"] as SelectList;
+}
+
+<h1>Products List</h1>
+
+<p>
+    <a asp-action="Create">Create</a>
+</p>
+
+<div>
+    <label for="category">Category:</label>
+    @Html.DropDownList("category", categories, "All Categories", new { onchange = "location.href = '/Product/Index?categoryId=' + this.value;" })
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductId)
+            </th>
+            <th style="padding-left:20px">
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th style="padding-left:20px">
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </th>
+            <th style="padding-left:20px">
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th style="padding-left:20px">
+                @Html.DisplayNameFor(model => model.UnitsInStock)
+            </th>
+            <th style="padding-left:20px">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ProductId
+                </td>
+                <td style="padding-left:20px">
+                    @item.ProductName
+                </td>
+                <td style="padding-left:20px">
+                    @item.Category.CategoryName
+                </td>
+                <td style="padding-left:20px">
+                    @item.UnitPrice
+                </td>
+                <td style="padding-left:20px">
+                    @item.UnitsInStock
+                </td>
+                <td style="padding-left:20px">
+                    <a href="@Url.Action("Update", new { id = item.ProductId })">Update</a>
+                    <form method="post" action="@Url.Action("Delete", new { id = item.ProductId })" style="display:inline">
+                        <button type="submit" class="btn-link">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
