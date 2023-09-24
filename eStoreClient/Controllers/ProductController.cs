@@ -22,18 +22,6 @@ namespace eStoreClient.Controllers
 			CategoryApiUrl = "http://localhost:5046/api/Category";
 		}
 
-        private async Task<Product> GetProductById(int id)
-        {
-            HttpResponseMessage response = await client.GetAsync($"{ProductApiUrl}/{id}");
-            string StrData = await response.Content.ReadAsStringAsync();
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-            Product p = JsonSerializer.Deserialize<Product>(StrData, options);
-            return p;
-        }
-
         private async Task<List<Category>> GetCategories()
 		{
 			HttpResponseMessage categoryResponse = await client.GetAsync(CategoryApiUrl);
@@ -46,6 +34,7 @@ namespace eStoreClient.Controllers
 			return categoryList;
 		}
 
+		//View
 		public async Task<IActionResult> Index(int? categoryId)
 		{
 			HttpResponseMessage productResponse = await client.GetAsync(ProductApiUrl);
@@ -74,6 +63,7 @@ namespace eStoreClient.Controllers
 			return View(productList);
 		}
 
+		//Create
         public async Task<IActionResult> Create()
         {
             List<Category> categoryList = await GetCategories();
@@ -94,6 +84,8 @@ namespace eStoreClient.Controllers
             return BadRequest();
         }
 
+
+		//Update
 		public async Task<IActionResult> Edit(int id)
 		{
 			List<Category> categoryList = await GetCategories();
@@ -127,6 +119,8 @@ namespace eStoreClient.Controllers
 			return BadRequest();
 		}
 
+
+		//Delete
 		[HttpPost]
         public async Task<IActionResult> Delete(int id)
         {

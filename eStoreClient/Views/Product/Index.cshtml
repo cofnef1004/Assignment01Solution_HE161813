@@ -58,7 +58,7 @@
                     @item.UnitsInStock
                 </td>
                 <td style="padding-left:20px">
-                    <a href="@Url.Action("UpdateProduct", "Product", new { id = item.ProductId })">Edit</a>
+                    <a href="@Url.Action("Edit", new { id = item.ProductId })">Edit</a>
                     <form method="post" action="@Url.Action("Delete", new { id = item.ProductId })" style="display:inline">
                         <button type="submit" class="btn-link">Delete</button>
                     </form>
