@@ -1,6 +1,8 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Core.Types;
 using Repository.Interface;
 using Repository.Repository;
 
@@ -10,42 +12,76 @@ namespace eStoreAPI.Controllers
 	[ApiController]
 	public class ProductController : ControllerBase
 	{
-		private IProductRepository repository = new ProductRepository();
+        private IProductRepository _productRepository;
 
-		[HttpGet]
-		public ActionResult<IEnumerable<Product>> GetProducts() => repository.GetProducts();
-
-		[HttpGet("{categoryId}")]
-		public ActionResult<IEnumerable<Product>> GetProductsByCategoryId(int categoryId)
-		{
-			return repository.GetProductsByCateId(categoryId);
-		}
-
-        [HttpPost]
-        public IActionResult PostProduct(Product p)
+        public ProductController(IProductRepository productRepository)
         {
-            repository.SaveProduct(p);
-            return NoContent();
+            _productRepository = productRepository;
+        }
+        //get all
+        [HttpGet]
+        public IActionResult GetProducts()
+        {
+            try
+            {
+                var products = _productRepository.GetProducts();
+                return Ok(products);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<ProductDTO> GetProductById(int id)
+        {
+            return _productRepository.GetProductById(id);
+        }
+        //create new product
+        [HttpPost]
+        public IActionResult CreateProduct(ProductDTO productDTO)
+        {
+            try
+            {
+                _productRepository.CreateProduct(productDTO);
+                return Ok(productDTO);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
+        [HttpPut("{id}")]
+        public IActionResult UpdateProduct(int id, ProductDTO productDTO)
+        {
+            productDTO.ProductId = id;
+            try
+            {
+                _productRepository.UpdateProduct(productDTO);
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+        }
         [HttpDelete("{id}")]
         public IActionResult DeleteProduct(int id)
         {
-            var p = repository.GetProductById(id);
-            if (p == null)
-                return NotFound();
-            repository.DeleteProduct(p);
-            return NoContent();
-        }
+            try
+            {
+                _productRepository.DeleteProduct(id);
+                return Ok();
+            }
+            catch (Exception)
+            {
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, Product product)
-        {
-            var p = repository.GetProductById(id);
-            if (p == null)
-                return NotFound();
-            repository.UpdateProduct(product);
-            return NoContent();
+                return BadRequest();
+            }
         }
     }
 }

@@ -2,43 +2,39 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+	var categories = ViewData["Categories"] as SelectList;
 }
 @model BusinessObject.Models.Product
+
 <h2>Add Product</h2>
 
 @using (Html.BeginForm("Create", "Product", FormMethod.Post))
 {
-        <div class="form-group">
-        @Html.LabelFor(model => model.ProductName)
-        @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.ProductName)
-        </div>
+		<div class="form-group">
+		@Html.LabelFor(model => model.ProductName)
+		@Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.ProductName)
+		</div>
 
-        <div class="form-group">
-        @Html.LabelFor(model => model.CategoryId)
-        @Html.TextBoxFor(model => model.CategoryId, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.CategoryId)
-        </div>
+		<div class="form-group">
+		@Html.LabelFor(model => model.UnitPrice)
+		@Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.UnitPrice)
+		</div>
 
-                        <div class="form-group">
-        @Html.LabelFor(model => model.Weight)
-        @Html.TextBoxFor(model => model.Weight, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Weight)
-        </div>
+		<div class="form-group">
+			<label for="CategoryId">Category:</label>
+		@Html.DropDownListFor(model => model.CategoryId, categories, "Select a category", new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.CategoryId)
+		</div>
 
-                <div class="form-group">
-        @Html.LabelFor(model => model.UnitPrice)
-        @Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.UnitPrice)
-        </div>
+		<div class="form-group">
+		@Html.LabelFor(model => model.UnitsInStock)
+		@Html.TextBoxFor(model => model.UnitsInStock, new { @class = "form-control" })
+		@Html.ValidationMessageFor(model => model.UnitsInStock)
+		</div>
 
-        <div class="form-group">
-        @Html.LabelFor(model => model.UnitsInStock)
-        @Html.TextBoxFor(model => model.UnitsInStock, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.UnitsInStock)
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Add" class="btn btn-primary" />
-        </div>
+		<div class="form-group">
+			<input type="submit" value="Add" class="btn btn-primary" />
+		</div>
 }

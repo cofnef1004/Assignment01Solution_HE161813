@@ -22,7 +22,19 @@ namespace eStoreClient.Controllers
 			CategoryApiUrl = "http://localhost:5046/api/Category";
 		}
 
-		private async Task<List<Category>> GetCategories()
+        private async Task<Product> GetProductById(int id)
+        {
+            HttpResponseMessage response = await client.GetAsync($"{ProductApiUrl}/{id}");
+            string StrData = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            Product p = JsonSerializer.Deserialize<Product>(StrData, options);
+            return p;
+        }
+
+        private async Task<List<Category>> GetCategories()
 		{
 			HttpResponseMessage categoryResponse = await client.GetAsync(CategoryApiUrl);
 			string categoryStrData = await categoryResponse.Content.ReadAsStringAsync();
@@ -62,34 +74,60 @@ namespace eStoreClient.Controllers
 			return View(productList);
 		}
 
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            List<Category> categoryList = await GetCategories();
+            ViewData["Categories"] = new SelectList(categoryList, "CategoryId", "CategoryName");
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product p)
+        public async Task<IActionResult> Create(Product product)
         {
-            if (ModelState.IsValid)
-            {
-                var jsonContent = JsonSerializer.Serialize(p);
-                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsJsonAsync(ProductApiUrl, product);
 
-                HttpResponseMessage response = await client.PostAsync(ProductApiUrl, content);
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Error");
-                }
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
             }
-            return View(p);
+
+            return BadRequest();
         }
 
-        [HttpPost]
+		public async Task<IActionResult> Edit(int id)
+		{
+			List<Category> categoryList = await GetCategories();
+			ViewData["Categories"] = new SelectList(categoryList, "CategoryId", "CategoryName");
+
+			HttpResponseMessage productResponse = await client.GetAsync($"{ProductApiUrl}/{id}");
+			if (productResponse.IsSuccessStatusCode)
+			{
+				string productStrData = await productResponse.Content.ReadAsStringAsync();
+				var options = new JsonSerializerOptions
+				{
+					PropertyNameCaseInsensitive = true,
+				};
+				Product product = JsonSerializer.Deserialize<Product>(productStrData, options);
+				return View(product);
+			}
+
+			return NotFound();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(int id, Product product)
+		{
+			HttpResponseMessage response = await client.PutAsJsonAsync($"{ProductApiUrl}/{id}", product);
+
+			if (response.IsSuccessStatusCode)
+			{
+				return RedirectToAction("Index");
+			}
+
+			return BadRequest();
+		}
+
+		[HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             HttpResponseMessage response = await client.DeleteAsync($"{ProductApiUrl}/{id}");

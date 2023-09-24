@@ -1,5 +1,7 @@
-﻿using BusinessObject.Models;
+﻿using AutoMapper;
+using BusinessObject.Models;
 using DataAccess.DAO;
+using DataAccess.DTO;
 using Repository.Interface;
 using System;
 using System.Collections.Generic;
@@ -9,24 +11,49 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository
 {
-	public class ProductRepository : IProductRepository
-	{
-        public void SaveProduct(Product product) => ProductDAO.AddProduct(product);
+    public class ProductRepository : IProductRepository
+    {
+        Prn231As1Context _prn231As1Context;
+        IMapper mapper;
+        ProductDAO productDAO;
+        public ProductRepository(Prn231As1Context context, IMapper mapper)
+        {
+            _prn231As1Context = context;
+            this.mapper = mapper;
+        }
 
-        public void DeleteProduct(Product product) => ProductDAO.DeleteProduct(product);
+        public void CreateProduct(ProductDTO productDTO)
+        {
+            productDAO = new ProductDAO(_prn231As1Context);
+            Product p = mapper.Map<Product>(productDTO);
+            productDAO.CreateProduct(p);
+        }
 
-        public void UpdateProduct(Product product) => ProductDAO.UpdateProduct(product);
+        public List<ProductDTO> GetProducts()
+        {
+            productDAO = new ProductDAO(_prn231As1Context);
+            List<ProductDTO> productDTOs = mapper.Map<List<ProductDTO>>(productDAO.GetProducts());
+            return productDTOs;
+        }
 
-        public List<Product> GetProducts()
-		{
-			return ProductDAO.GetAllProducts();
-		}
 
-		public List<Product> GetProductsByCateId(int cateId)
-		{
-			return ProductDAO.GetAllProductsByCateId(cateId);
-		}
+        public ProductDTO GetProductById(int id)
+        {
+            productDAO = new ProductDAO(_prn231As1Context);
+            ProductDTO productDTOs = mapper.Map<ProductDTO>(productDAO.GetProductById(id));
+            return productDTOs;
+        }
+        public void UpdateProduct(ProductDTO productDTO)
+        {
+            productDAO = new ProductDAO(_prn231As1Context);
+            Product p = mapper.Map<Product>(productDTO);
+            productDAO.UpdateProduct(p);
+        }
+        public void DeleteProduct(int id)
+        {
+            productDAO = new ProductDAO(_prn231As1Context);
+            productDAO.DeleteProduct(id);
+        }
 
-        public Product GetProductById(int productId) => ProductDAO.GetProductById(productId);
     }
 }

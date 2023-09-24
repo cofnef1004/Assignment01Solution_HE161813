@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Repository.Interface
 {
 	public interface IProductRepository
 	{
-		List<Product> GetProducts();
-        Product GetProductById(int productId);
-        List<Product> GetProductsByCateId(int cateId);
-        void SaveProduct(Product product);
-        void UpdateProduct(Product product);
-        void DeleteProduct(Product product);
+        void CreateProduct(ProductDTO product);
+        List<ProductDTO> GetProducts();
+
+        ProductDTO GetProductById(int id);
+        void UpdateProduct(ProductDTO product);
+        void DeleteProduct(int id);
     }
 }
