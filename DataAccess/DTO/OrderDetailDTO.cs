@@ -1,6 +1,7 @@
 ﻿using BusinessObject.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -20,9 +21,9 @@ namespace DataAccess.DTO
 
 		public double Discount { get; set; }
 
-		[JsonIgnore]
-		public virtual Order? Order { get; set; }
-		[JsonIgnore]
-		public virtual Product? Product { get; set; }
+		[AllowNull]
+		public virtual OrderDTO? Order { get; set; }
+		[AllowNull]
+		public virtual ProductDTO? Product { get; set; }
 	}
 }

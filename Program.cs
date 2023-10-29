@@ -1,6 +1,8 @@
-using BusinessObject.Models;
+using BussinessObject.Models;
+using DataAccess.IRepository;
 using DataAccess.Mapping;
-using Repository.Interface;
+using DataAccess.Repository;
+using Repository.IRepository;
 using Repository.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,17 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddTransient<IProductRepository, ProductRepository>()
-    .AddDbContext<Prn231As1Context>(opt =>
+builder.Services.AddTransient<IPlayerRepository, PlayerRepository>()
+    .AddDbContext<FinalProPrn231Context>(opt =>
     builder.Configuration.GetConnectionString("MyStoreDB"));
-builder.Services.AddTransient<IMemberRepository, MemberRepository>()
-    .AddDbContext<Prn231As1Context>(opt =>
-    builder.Configuration.GetConnectionString("MyStoreDB"));
-builder.Services.AddTransient<IOrderRepository, OrderRepository>()
-	.AddDbContext<Prn231As1Context>(opt =>
-	builder.Configuration.GetConnectionString("MyStoreDB"));
-builder.Services.AddTransient<IOrderDetailRepository, OrderDetailRepository>()
-	.AddDbContext<Prn231As1Context>(opt =>
+builder.Services.AddTransient<ICityRepository, CityRepository>()
+	.AddDbContext<FinalProPrn231Context>(opt =>
 	builder.Configuration.GetConnectionString("MyStoreDB"));
 var app = builder.Build();
 

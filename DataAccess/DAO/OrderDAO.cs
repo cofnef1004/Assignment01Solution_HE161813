@@ -20,7 +20,12 @@ namespace DataAccess.DAO
 			return _context.Orders.Include(p => p.Member).ToList();
 		}
 
-		public Order GetOrderById(int orderId)
+        public List<Order> GetOrdersByMemId(int memId)
+        {
+            return _context.Orders.Include(p => p.Member).Where(p=>p.MemberId == memId).ToList();
+        }
+
+        public Order GetOrderById(int orderId)
 		{
 			return _context.Orders.SingleOrDefault(p => p.OrderId == orderId);
 		}
@@ -47,6 +52,8 @@ namespace DataAccess.DAO
 			var p = _context.Orders.FirstOrDefault(x => x.OrderId == id);
 			if (p != null)
 			{
+				var orderDetails = _context.OrderDetails.Where(od => od.OrderId == id);
+				_context.OrderDetails.RemoveRange(orderDetails);
 				_context.Orders.Remove(p);
 				_context.SaveChanges();
 			}

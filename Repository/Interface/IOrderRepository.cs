@@ -13,7 +13,9 @@ namespace Repository.Interface
 		void CreateOrder(OrderDTO order);
 		List<OrderDTO> GetOrders();
 
-		OrderDTO GetOrderById(int id);
+        List<OrderDTO> GetOrdersByMemId(int memId);
+
+        OrderDTO GetOrderById(int id);
 		void UpdateOrder(OrderDTO order);
 		void DeleteOrder(int id);
 	}

@@ -1,69 +1,87 @@
 ﻿@model IEnumerable<BusinessObject.Models.Product>
 
 @{
-    var categories = ViewData["Categories"] as SelectList;
+	var categories = ViewData["Categories"] as SelectList;
+	string isAdmin = TempData["IsAdmin"] as string;
+
+}
+<h1>Products List</h1>
+@if (isAdmin == "true")
+{
+	<p>
+		<a href="/Member/MemberList" class="btn btn-primary">Member</a>
+	</p>
+	<p>
+		<a class="btn btn-primary" asp-action="Create">Create</a>
+	</p>
+}
+else
+{
+	<p>
+		<a href="/Member/Profile" class="btn btn-primary">Profile</a>
+	</p>
+}
+@using (Html.BeginForm("Index", "Product", FormMethod.Get))
+{
+	<p>
+		<input type="text" name="productName" placeholder="Enter product name" />
+		<input type="number" name="minPrice" placeholder="Min price" step="1000" />
+		<input type="number" name="maxPrice" placeholder="Max price" step="1000" />
+		<button style="border-radius:8px; text-decoration: none" type="submit">Search</button>
+	</p>
 }
 
-<h1>Products List</h1>
-
-<p>
-    <a asp-action="Create">Create</a>
-</p>
-
-<div>
-    <label for="category">Category:</label>
-    @Html.DropDownList("category", categories, "All Categories", new { onchange = "location.href = '/Product/Index?categoryId=' + this.value;" })
-</div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductId)
-            </th>
-            <th style="padding-left:20px">
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th style="padding-left:20px">
-                @Html.DisplayNameFor(model => model.Category.CategoryName)
-            </th>
-            <th style="padding-left:20px">
-                @Html.DisplayNameFor(model => model.UnitPrice)
-            </th>
-            <th style="padding-left:20px">
-                @Html.DisplayNameFor(model => model.UnitsInStock)
-            </th>
-            <th style="padding-left:20px">
-                Actions
-            </th>
-        </tr>
+<table class="table align-middle mb-0 bg-white">
+    <thead class="bg-light">
+		<tr>
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.ProductName)
+			</th>
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.Category.CategoryName)
+			</th>
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.UnitPrice)
+			</th>
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.UnitsInStock)
+			</th>
+			@if (isAdmin == "true")
+			{
+				<th style="padding-left:20px">
+					Actions
+				</th>
+			}
+		</tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.ProductId
-                </td>
-                <td style="padding-left:20px">
-                    @item.ProductName
-                </td>
-                <td style="padding-left:20px">
-                    @item.Category.CategoryName
-                </td>
-                <td style="padding-left:20px">
-                    @item.UnitPrice
-                </td>
-                <td style="padding-left:20px">
-                    @item.UnitsInStock
-                </td>
-                <td style="padding-left:20px">
-                    <a href="@Url.Action("Edit", new { id = item.ProductId })">Edit</a>
-                    <form method="post" action="@Url.Action("Delete", new { id = item.ProductId })" style="display:inline">
-                        <button type="submit" class="btn-link">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td style="padding-left:20px">
+					@item.ProductName
+				</td>
+				<td style="padding-left:20px">
+					@item.Category.CategoryName
+				</td>
+				<td style="padding-left:20px">
+					@item.UnitPrice
+				</td>
+				<td style="padding-left:20px">
+					@item.UnitsInStock
+				</td>
+				@if (isAdmin == "true")
+				{
+					<td style="padding-left:20px">
+						<form action="@Url.Action("Edit", new { id = item.ProductId })" style="display:inline">
+							<button type="submit" style="border-radius:8px; text-decoration: none">Edit</button>
+						</form>
+						<form method="post" action="@Url.Action("Delete", new { id = item.ProductId })" style="display:inline">
+							<button type="submit" style="border-radius:8px; text-decoration: none">Delete</button>
+						</form>
+					</td>
+				}
+			</tr>
+		}
+	</tbody>
 </table>

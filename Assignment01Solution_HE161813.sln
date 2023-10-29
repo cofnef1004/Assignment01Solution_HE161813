@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{CD4EE6DD-32B6-47C2-8E6C-4CA52A975606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{D3A112C7-9262-4B70-93D5-D9EBAD922784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{D3A112C7-9262-4B70-93D5-D9EBAD922784}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

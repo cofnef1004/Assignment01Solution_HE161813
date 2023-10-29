@@ -1,0 +1,81 @@
+﻿@model IEnumerable<BusinessObject.Models.Order>
+
+@{
+	var categories = ViewData["Categories"] as SelectList;
+	string isAdmin = TempData["IsAdmin"] as string;
+}
+
+<h1>Orders List</h1>
+
+@if (isAdmin == "true")
+{
+	<p>
+		<a class="btn btn-primary" asp-action="Create">Create</a>
+	</p>
+}
+<table class="table align-middle mb-0 bg-white">
+	<thead class="bg-light">
+		<tr>
+			@if (isAdmin == "true")
+			{
+				<th>
+					@Html.DisplayNameFor(model => model.MemberId)
+				</th>
+			}
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.OrderDate)
+			</th>
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.RequireDate)
+			</th>
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.ShippedDate)
+			</th>
+			<th style="padding-left:20px">
+				@Html.DisplayNameFor(model => model.Freight)
+			</th>
+			@if (isAdmin == "true")
+			{
+				<th style="padding-left:20px">
+					Actions
+				</th>
+			}
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				@if (isAdmin == "true")
+				{
+					<td>
+						@item.MemberId
+					</td>
+				}
+				<td style="padding-left:20px">
+					@item.OrderDate
+				</td>
+				<td style="padding-left:20px">
+					@item.RequireDate
+				</td>
+				<td style="padding-left:20px">
+					@item.ShippedDate
+				</td>
+				<td style="padding-left:20px">
+					@item.Freight
+				</td>
+				@if (isAdmin == "true")
+				{
+					<td style="padding-left:20px">
+						<form action="@Url.Action("Edit", new { id = item.OrderId })" style="display:inline">
+							<button style="border-radius:8px; text-decoration: none" type="submit">Edit</button>
+						</form>
+						<form method="post" action="@Url.Action("Delete", new { id = item.OrderId })" style="display:inline">
+							<button style="border-radius:8px; text-decoration: none" type="submit">Delete</button>
+						</form>
+					</td>
+				}
+			</tr>
+		}
+	</tbody>
+</table>

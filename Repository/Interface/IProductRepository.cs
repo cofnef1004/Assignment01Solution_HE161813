@@ -13,6 +13,10 @@ namespace Repository.Interface
         void CreateProduct(ProductDTO product);
         List<ProductDTO> GetProducts();
 
+        List<ProductDTO> GetProductsByName(string name);
+
+        List<ProductDTO> GetProductsByPrice(decimal minPrice, decimal maxPrice);
+
         ProductDTO GetProductById(int id);
         void UpdateProduct(ProductDTO product);
         void DeleteProduct(int id);

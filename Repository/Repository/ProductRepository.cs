@@ -55,5 +55,18 @@ namespace Repository.Repository
             productDAO.DeleteProduct(id);
         }
 
+        public List<ProductDTO> GetProductsByName(string name)
+        {
+            productDAO = new ProductDAO(_prn231As1Context);
+            List<ProductDTO> productDTOs = mapper.Map<List<ProductDTO>>(productDAO.GetProductsByName(name));
+            return productDTOs;
+        }
+
+        public List<ProductDTO> GetProductsByPrice(decimal minPrice, decimal maxPrice)
+        {
+            productDAO = new ProductDAO(_prn231As1Context);
+            List<ProductDTO> productDTOs = mapper.Map<List<ProductDTO>>(productDAO.GetProductsByPrice(minPrice,maxPrice));
+            return productDTOs;
+        }
     }
 }

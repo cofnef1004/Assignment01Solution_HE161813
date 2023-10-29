@@ -14,10 +14,12 @@ namespace eStoreAPI.Controllers
 	public class OrderController : ControllerBase
 	{
 		private IOrderRepository _orderRepository;
+		private IOrderDetailRepository _orderdetailRepository;
 
-		public OrderController(IOrderRepository orderRepository)
+		public OrderController(IOrderRepository orderRepository, IOrderDetailRepository orderdetailRepository)
 		{
 			_orderRepository = orderRepository;
+			_orderdetailRepository = orderdetailRepository;
 		}
 		//get all
 		[HttpGet]
@@ -40,8 +42,23 @@ namespace eStoreAPI.Controllers
 		{
 			return _orderRepository.GetOrderById(id);
 		}
-		//create new product
-		[HttpPost]
+
+        [HttpGet("member/{memberId}")]
+        public IActionResult GetOrdersByMemberId(int memberId)
+        {
+            try
+            {
+                var orders = _orderRepository.GetOrdersByMemId(memberId);
+                return Ok(orders);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        //create new product
+        [HttpPost]
 		public IActionResult CreateOrder(OrderDTO orderDTO)
 		{
 			try
@@ -75,6 +92,7 @@ namespace eStoreAPI.Controllers
 		{
 			try
 			{
+				_orderdetailRepository.DeleteOrderDetail(id);
 				_orderRepository.DeleteOrder(id);
 				return Ok();
 			}

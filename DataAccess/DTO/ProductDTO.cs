@@ -1,6 +1,7 @@
 ﻿using DataAccess.DAO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -21,7 +22,7 @@ namespace DataAccess.DTO
         public decimal UnitPrice { get; set; }
 
         public int? UnitsInStock { get; set; }
-        [JsonIgnore]
+        [AllowNull]
         public virtual CategoryDTO? Category { get; set; }
     }
 }

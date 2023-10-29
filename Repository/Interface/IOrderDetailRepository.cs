@@ -9,9 +9,9 @@ namespace Repository.Interface
 {
 	public interface IOrderDetailRepository
 	{
-		void CreateOrderId(OrderDetailDTO orderDetailDTO);
 		List<OrderDetailDTO> GetOrderDetailDTOs();
 
 		List<OrderDetailDTO> GetOrderDetailDTOsByOrderId(int orderId);
+		void DeleteOrderDetail(int id);
 	}
 }

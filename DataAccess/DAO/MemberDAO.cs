@@ -19,6 +19,16 @@ namespace DataAccess.DAO
         {
             return _context.Members.ToList();
         }
+
+		public Member GetMemberById(int id)
+		{
+			return _context.Members.FirstOrDefault(p => p.MemberId.Equals(id));
+		}
+
+		public Member GetMemberByEmail(string email) 
+        {
+            return _context.Members.FirstOrDefault(p => p.Email.Equals(email));
+        }
         public void CreateMember(Member member)
         {
             _context.Members.Add(member);
@@ -39,13 +49,27 @@ namespace DataAccess.DAO
         }
 		public void DeleteMember(int id)
 		{
-			var member = _context.Members.Include(m => m.Orders).FirstOrDefault(x => x.MemberId == id);
+			var member = _context.Members.Include(m => m.Orders).ThenInclude(o => o.OrderDetails).FirstOrDefault(x => x.MemberId == id);
 			if (member != null)
 			{
-				_context.Orders.RemoveRange(member.Orders);
+				var orders = member.Orders;
+
+				foreach (var order in orders)
+				{
+					var orderDetails = order.OrderDetails;
+					_context.OrderDetails.RemoveRange(orderDetails);
+				}
+
+				_context.Orders.RemoveRange(orders);
 				_context.Members.Remove(member);
 				_context.SaveChanges();
 			}
 		}
-	}
+
+		public Member Login(string email, string password)
+        {
+            Member member = _context.Members.FirstOrDefault(m => m.Email == email && m.Password == password);
+            return member;
+        }
+    }
 }

@@ -1,5 +1,7 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DAO;
 using DataAccess.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Interface;
 using Repository.Repository;
@@ -13,10 +15,12 @@ namespace eStoreAPI.Controllers
 	public class MemberController : ControllerBase
 	{
         private IMemberRepository memberRepository;
-        public MemberController(IMemberRepository memberRepository)
+		private IOrderRepository orderRepository;
+		public MemberController(IMemberRepository memberRepository,IOrderRepository orderRepository)
         {
             this.memberRepository = memberRepository;
-        }
+			this.orderRepository = orderRepository;
+		}
         [HttpGet]
         public IActionResult GetMembers()
         {
@@ -31,7 +35,29 @@ namespace eStoreAPI.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost]
+
+		[HttpGet("{id}")]
+		public ActionResult<MemberDTO> GetMemberById(int id)
+		{
+			return memberRepository.GetMemberById(id);
+		}
+
+        //Search
+        [HttpGet("email/{email}")]
+        public IActionResult SearchMemberByEmail(string email)
+		{
+			try
+			{
+				var products = memberRepository.GetMemberByEmail(email);
+				return Ok(products);
+			}
+			catch (Exception)
+			{
+				return BadRequest();
+			}
+		}
+
+		[HttpPost]
         public IActionResult CreateMember(MemberDTO m)
         {
             try
@@ -65,12 +91,34 @@ namespace eStoreAPI.Controllers
         {
             try
             {
-                memberRepository.DeleteMember(id);
+				memberRepository.DeleteMember(id);
                 return Ok();
             }
             catch (Exception)
             {
 
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login(string email, string password)
+        {
+            try
+            {
+                var result = memberRepository.Login(email, password);
+                if (result != null)
+                {
+                    var user = memberRepository.GetMemberByEmail(email);
+                    return Ok(user);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception)
+            {
                 return BadRequest();
             }
         }

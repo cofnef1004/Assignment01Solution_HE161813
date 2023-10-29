@@ -1,0 +1,56 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model BusinessObject.Models.Order
+
+@{
+	ViewData["Title"] = "Edit Order";
+}
+
+<h1>Edit Order</h1>
+
+@using (Html.BeginForm())
+{
+@*	<div class="form-group">
+		<label asp-for="MemberId">Member:</label>
+		<input asp-for="MemberId" class="form-control" />
+		<span asp-validation-for="MemberId" class="text-danger"></span>
+	</div>*@
+
+	<div class="form-group">
+		<label asp-for="MemberId">Member:</label>
+		<select asp-for="MemberId" asp-items="@ViewBag.Members" class="form-control">
+			<option value="">-- Select Member --</option>
+		</select>
+		<span asp-validation-for="MemberId" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="OrderDate">Order Date:</label>
+		<input asp-for="OrderDate" class="form-control" />
+		<span asp-validation-for="OrderDate" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="RequireDate">Require Date:</label>
+		<textarea asp-for="RequireDate" class="form-control"></textarea>
+		<span asp-validation-for="RequireDate" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="ShippedDate">Shipped Date:</label>
+		<textarea asp-for="ShippedDate" class="form-control"></textarea>
+		<span asp-validation-for="ShippedDate" class="text-danger"></span>
+	</div>
+
+	<div class="form-group">
+		<label asp-for="Freight">Freight:</label>
+		<textarea asp-for="Freight" class="form-control"></textarea>
+		<span asp-validation-for="Freight" class="text-danger"></span>
+	</div>
+
+	<button type="submit" style="margin-top:10px" class="btn btn-primary">Save</button>
+	<a asp-action="Index" style="margin-top:10px" class="btn btn-secondary">Cancel</a>
+}

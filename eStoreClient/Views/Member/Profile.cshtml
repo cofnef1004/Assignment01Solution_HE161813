@@ -1,0 +1,17 @@
+﻿@model BusinessObject.Models.Member
+
+<h1>Profile</h1>
+
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Company Name:</strong> @Model.CompanyName</p>
+<p><strong>City:</strong> @Model.City</p>
+<p><strong>Country:</strong> @Model.Country</p>
+<p><strong>Password:</strong> @Model.Password</p>
+
+<a href="/Product/Index" style="background-color:gray" class="btn btn-primary">Back</a>
+
+@Html.ActionLink("Update", "Update", "Member", null, new { @class = "btn btn-primary" })
+
+<a href="/Account/Logout" style="background-color:red" class="btn btn-primary">Log Out</a>
+
+

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,14 @@ namespace DataAccess.DAO
 		}
 		public List<OrderDetail> GetOrderDetails()
 		{
-			return _context.OrderDetails.ToList();
+			return _context.OrderDetails.Include(p=>p.Order)
+										.Include(p=>p.Product).ToList();
 		}
 
 		public List<OrderDetail> GetOrderDetailByOrderId(int orderId)
 		{
-			return _context.OrderDetails.Where(p => p.OrderId == orderId).ToList();
+			return _context.OrderDetails.Include(p=>p.Order)
+										.Include(p=>p.Product).Where(p => p.OrderId == orderId).ToList();
 		}
 		public void CreateOrderDetail(OrderDetail p)
 		{

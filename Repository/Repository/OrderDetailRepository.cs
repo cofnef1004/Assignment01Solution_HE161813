@@ -3,11 +3,6 @@ using BusinessObject.Models;
 using DataAccess.DAO;
 using DataAccess.DTO;
 using Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Repository
 {
@@ -22,10 +17,6 @@ namespace Repository.Repository
 			_prn231As1Context = context;
 			this.mapper = mapper;
 		}
-		public void CreateOrderId(OrderDetailDTO orderDetailDTO)
-		{
-			throw new NotImplementedException();
-		}
 
 		public List<OrderDetailDTO> GetOrderDetailDTOs()
 		{
@@ -39,6 +30,12 @@ namespace Repository.Repository
 			orderDetailDAO = new OrderDetailDAO(_prn231As1Context);
 			List<OrderDetailDTO> orderDetailDTOs = mapper.Map<List<OrderDetailDTO>>(orderDetailDAO.GetOrderDetailByOrderId(orderId));
 			return orderDetailDTOs;
+		}
+
+		public void DeleteOrderDetail(int id)
+		{
+			orderDetailDAO = new OrderDetailDAO(_prn231As1Context);
+			orderDetailDAO.DeleteOrderDetail(id);
 		}
 	}
 }

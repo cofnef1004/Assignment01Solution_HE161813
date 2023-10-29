@@ -33,19 +33,18 @@
 		<span asp-validation-for="CategoryId" class="text-danger"></span>
 	</div>
 
-
 	<div class="form-group">
-		<label asp-for="Weight">Description:</label>
+		<label asp-for="Weight">Weight:</label>
 		<textarea asp-for="Weight" class="form-control"></textarea>
 		<span asp-validation-for="Weight" class="text-danger"></span>
 	</div>
 
 	<div class="form-group">
-		<label asp-for="UnitsInStock">Description:</label>
+		<label asp-for="UnitsInStock">Units In Stock:</label>
 		<textarea asp-for="UnitsInStock" class="form-control"></textarea>
 		<span asp-validation-for="UnitsInStock" class="text-danger"></span>
 	</div>
 
-	<button type="submit" class="btn btn-primary">Save</button>
-	<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	<button type="submit" style="margin-top:10px" class="btn btn-primary">Save</button>
+	<a asp-action="Index" style="margin-top:10px" class="btn btn-secondary">Cancel</a>
 }

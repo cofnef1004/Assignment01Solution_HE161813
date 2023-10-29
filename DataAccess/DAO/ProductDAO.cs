@@ -20,6 +20,19 @@ namespace DataAccess.DAO
             return _context.Products.Include(p => p.Category).ToList();
         }
 
+        public List<Product> GetProductsByName(string name)
+        {
+            return _context.Products.Include(p => p.Category).Where(p=>p.ProductName.Contains(name)).ToList();
+        }
+
+        public List<Product> GetProductsByPrice(decimal minPrice, decimal maxPrice)
+        {
+            return _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.UnitPrice >= minPrice && p.UnitPrice <= maxPrice)
+                .ToList();
+        }
+
         public Product GetProductById(int productId)
         {
                 return _context.Products.SingleOrDefault(p => p.ProductId == productId);
@@ -42,14 +55,17 @@ namespace DataAccess.DAO
                 _context.SaveChanges();
             }
         }
-        public void DeleteProduct(int id)
-        {
-            var p = _context.Products.FirstOrDefault(x => x.ProductId == id);
-            if (p != null)
-            {
-                _context.Products.Remove(p);
-                _context.SaveChanges();
-            }
-        }
-    }
+		public void DeleteProduct(int id)
+		{
+			var product = _context.Products.FirstOrDefault(x => x.ProductId == id);
+			if (product != null)
+			{
+				var orderDetails = _context.OrderDetails.Where(od => od.ProductId == id);
+				_context.OrderDetails.RemoveRange(orderDetails);
+
+				_context.Products.Remove(product);
+				_context.SaveChanges();
+			}
+		}
+	}
 }

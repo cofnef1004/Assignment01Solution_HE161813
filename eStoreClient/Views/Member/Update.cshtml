@@ -1,0 +1,33 @@
+﻿@model BusinessObject.Models.Member
+
+<h2>Update Member Information</h2>
+
+@using (Html.BeginForm("Update", "Member", FormMethod.Post))
+{
+    <div>
+        @Html.LabelFor(model => model.Email)
+        @Html.TextBoxFor(model => model.Email)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.CompanyName)
+        @Html.TextBoxFor(model => model.CompanyName)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.City)
+        @Html.TextBoxFor(model => model.City)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Country)
+        @Html.TextBoxFor(model => model.Country)
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Password)
+        @Html.TextBoxFor(model => model.Password)
+    </div>
+
+    <button type="submit">Update</button>
+}

@@ -13,10 +13,12 @@ namespace eStoreAPI.Controllers
 	public class ProductController : ControllerBase
 	{
         private IProductRepository _productRepository;
+		private IOrderDetailRepository _orderDetailRepository;
 
-        public ProductController(IProductRepository productRepository)
+		public ProductController(IProductRepository productRepository, IOrderDetailRepository orderDetailRepository)
         {
             _productRepository = productRepository;
+            _orderDetailRepository = orderDetailRepository;
         }
         //get all
         [HttpGet]
@@ -39,6 +41,37 @@ namespace eStoreAPI.Controllers
         {
             return _productRepository.GetProductById(id);
         }
+
+        //Search
+        [HttpGet("Search")]
+        public IActionResult SearchProductByName(string name)
+        {
+            try
+            {
+                var products = _productRepository.GetProductsByName(name);
+                return Ok(products);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        // Filter
+        [HttpGet("Filter")]
+        public IActionResult FilterProductsByPrice(decimal minPrice, decimal maxPrice)
+        {
+            try
+            {
+                var products = _productRepository.GetProductsByPrice(minPrice, maxPrice);
+                return Ok(products);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
         //create new product
         [HttpPost]
         public IActionResult CreateProduct(ProductDTO productDTO)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -21,7 +22,7 @@ namespace DataAccess.DTO
 
 		public DateTime Freight { get; set; }
 
-		[JsonIgnore]
+		[AllowNull]
 		public virtual MemberDTO? Member { get; set; }
 	}
 }

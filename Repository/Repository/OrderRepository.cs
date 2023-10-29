@@ -55,5 +55,11 @@ namespace Repository.Repository
 			orderDAO.DeleteOrder(id);
 		}
 
-	}
+        public List<OrderDTO> GetOrdersByMemId(int memId)
+        {
+            orderDAO = new OrderDAO(_prn231As1Context);
+            List<OrderDTO> orderDTOs = mapper.Map<List<OrderDTO>>(orderDAO.GetOrdersByMemId(memId));
+            return orderDTOs;
+        }
+    }
 }

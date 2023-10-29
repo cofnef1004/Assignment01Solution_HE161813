@@ -17,7 +17,7 @@ namespace DataAccess.Mapping
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Member, MemberDTO>().ReverseMap();
 			CreateMap<Order, OrderDTO>().ReverseMap();
-			CreateMap<OrderDetail, OrderDetail>().ReverseMap();
+			CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
 		}
     }
 }
